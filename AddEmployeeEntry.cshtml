@@ -1,0 +1,253 @@
+﻿@model TimeEntriesEmployees.Models.DisplayClasses.TimeEntriesViewModelDisplayClasses
+@{
+    ViewBag.Title = "AddEmployeeEntry";
+    Layout = null;
+}
+
+
+@{
+    var result = "";
+    if (IsPost)
+    {
+        var firstName = Request["FirstName"];
+        var lastName = Request["LastName"];
+        var email = Request["EmailAddress"];
+        var date = Request["Date"];
+        var task = Request["Task"];
+        var hoursWorked = Request["HoursWorked"];
+        var comment = Request["Comment"];
+
+
+        var userData = firstName + "," + lastName +
+            "," + email + ","+date+","+task+","+hoursWorked+","+comment+Environment.NewLine;
+
+        var dataFile = Server.MapPath("~/App_Data/employee.dat ");
+        File.AppendAllText(@dataFile, userData);
+        result = "Information saved.";
+    }
+}
+<head>
+    <style>
+        .button {
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 8px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            
+        }
+            .button:hover {
+                background-color: #FFFFFF;
+                color: blue;
+
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Employee Time Entry Form</title>
+    <link href="~/Resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Resources/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="~/Resources/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- Gritter -->
+    <link href="~/Resources/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="~/Resources/css/animate.css" rel="stylesheet">
+    <link href="~/Resources/css/style.css" rel="stylesheet">
+    <link href="~/Resources/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <!-- Mainly scripts -->
+    <script src="~/Resources/js/jquery-3.1.1.min.js"></script>
+
+
+    <script src="~/Resources/js/bootstrap.min.js"></script>
+    <script src="~/Resources/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Resources/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Flot -->
+    <script src="~/Resources/js/plugins/flot/jquery.flot.js"></script>
+    <script src="~/Resources/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/Resources/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="~/Resources/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="~/Resources/js/plugins/flot/jquery.flot.pie.js"></script>
+    <!-- Peity -->
+    <script src="~/Resources/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="~/Resources/js/demo/peity-demo.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="~/Resources/js/inspinia.js"></script>
+    <script src="~/Resources/js/plugins/pace/pace.min.js"></script>
+    <script src="~/Resources/js/plugins/dataTables/datatables.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="~/Resources/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- GITTER -->
+    <script src="~/Resources/js/plugins/gritter/jquery.gritter.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/Resources/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <!-- Sparkline demo data  -->
+    <script src="~/Resources/js/demo/sparkline-demo.js"></script>
+    <!-- ChartJS-->
+    <script src="~/Resources/js/plugins/chartJs/Chart.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/Resources/js/plugins/toastr/toastr.min.js"></script>
+    <script src="~/Resources/js/MyScripts.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+    </script>
+</head>
+
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Employee TimeEntry Details</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title  boxcolor-custom1">
+                    <h5>Enter New Employee Details</h5>
+                </div>
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm("AddEmployeeEntry", "TimeEntries", FormMethod.Post))
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>First Name<span style="color:red;">*</span></label>
+
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Please Enter First Name" } })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>Last Name<span style="color:red;">*</span></label>
+
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Please Enter LastName" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>Email Address<span style="color:red;">*</span></label>
+
+                                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Email Address" } })
+                                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>Date<span style="color:red;">*</span></label>
+
+                                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date" } })
+                                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>Task<span style="color:red;">*</span></label>
+
+                                        @*@Html.DropDownList("Task", new SelectList(Enum.GetValues(typeof(Task1))), "Select Task", new { @class = "form-control" })*@
+
+                                        <select class="form-control" id="Task" name="Task">
+                                            <option>Select Task</option>
+                                            <option>Administration</option>
+                                            <option>Break</option>
+                                            <option>Project Alpha</option>
+                                            <option>Project Beta</option>
+                                            <option>Project Gamma</option>
+                                        </select>
+                                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>HoursWorked<span style="color:red;">*</span></label>
+
+                                        @Html.EditorFor(model => model.HoursWorked, new { htmlAttributes = new { @class = "form-control", @placeholder = "Hours Worked" } })
+                                        @Html.ValidationMessageFor(model => model.HoursWorked, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label>Comment</label>
+
+                                        @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Comment" } })
+                                        @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <br />
+                            <input class="button" type="submit" value="Create" />
+
+                            <a href="~/TimeEntries/TimeEntriesRazor" class="button">Cancel</a>
+
+
+                        </div>
+                        <div>
+                            @if (result != "")
+                            {
+                                <p>Result: @result</p>
+                            }
+                        </div>
+
+
+                    }
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
